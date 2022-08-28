@@ -35,15 +35,16 @@ app.post('/onboarding', (req, res) => {
 app.post('/setQuestion', (req, res) => {
     const content = req.body.content
     const ques_id = req.body.ques_id
-    if(!err){
-        const newQues = new Questions({content: content, ques_id: parseInt(ques_id)})
+    const input_type = req.body.input_type
+    if(content && ques_id && input_type){
+        const newQues = new Questions(req.body)
         newQues.save().then(() => {
             res.status(200).send({ message: "Ques Saved Successfully"})
         }).catch(err => {
             return res.status(400).send({ message: err.message })
         })
     }else{
-        return res.status(400).send({ message: err.message})
+        return res.status(400).send({ message: "Invalid Input"})
     }
 })
 
@@ -64,7 +65,7 @@ app.post('/setOptions', (req, res)=>{
     const content = req.body.content
     const ques_id = req.body.ques_id
     const option_id = req.body.option_id
-    if(!err){
+    if(content && ques_id && option_id){
         const newOption = new Options({content: content, ques_id: parseInt(ques_id), option_id: parseInt(option_id)})
         newOption.save().then(() => {
             res.status(200).send({ message: "Saved Successfully"})
@@ -72,7 +73,7 @@ app.post('/setOptions', (req, res)=>{
             return res.status(400).send({ message: err.message })
         })
     }else{
-        return res.status(400).send({ message: err.message})
+        return res.status(400).send({ message: "Invalid Input"})
     }
 })
 
