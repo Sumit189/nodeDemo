@@ -3,6 +3,7 @@ var app = express();
 const cors = require('cors');
 require('./db/mongoose')
 var bodyParser = require('body-parser');
+const PORT = process.env.PORT || 3000;
 
 const UserEvaluations = require('./models/userEvaluation')
 const Questions = require('./models/questions')
@@ -98,7 +99,7 @@ app.get('/options', (req, res) => {
 
 })
 
-var server = app.listen(8081, function () {
+var server = app.listen(PORT, function () {
    var host = server.address().address
    var port = server.address().port
    console.log("Server listening on", host, port)

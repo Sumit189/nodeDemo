@@ -1,3 +1,3 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://127.0.0.1:27017/onboard_api',{useNewUrlParser: true})
+mongoose.connect("mongodb+srv://sumit:Test$ecret@1092@cluster0.0j9u3ct.mongodb.net/?retryWrites=true&w=majority",{useNewUrlParser: true})
