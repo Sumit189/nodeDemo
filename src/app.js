@@ -46,7 +46,6 @@ app.post('/setQuestion', (req, res) => {
 })
 
 app.get('/question', (req, res) => {
-    console.log("Test: "+res.query.ques_id)
     if (!req.query.ques_id){
         return res.status(400).send({ message: "Invalid Request"})
     }
