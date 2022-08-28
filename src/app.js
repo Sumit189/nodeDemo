@@ -10,9 +10,6 @@ const Questions = require('./models/questions')
 const Options = require('./models/options')
 
 app.use(
-    cors({
-        origin: 'http://localhost:3000'
-    }),
     bodyParser.json()
 );
 
