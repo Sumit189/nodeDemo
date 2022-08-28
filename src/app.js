@@ -8,10 +8,52 @@ const PORT = process.env.PORT || 3000;
 const UserEvaluations = require('./models/userEvaluation')
 const Questions = require('./models/questions')
 const Options = require('./models/options')
+const Users = require('./models/users')
 
 app.use(
     bodyParser.json()
 );
+
+app.get('/signin', (req, res) => {
+    if(!req.body.username || !req.body.password){
+        return res.status(404).send({message: 'Invalid username or password'})
+    }else{
+        username = req.body.username
+        Users.findOne({username: username}, (err, user) => {
+            if(err){
+                return res.status(404).send({message: ''})
+            }
+            else{
+                if(user.password === req.body.password){
+                    return res.status(200).send({user: user})
+                }else{
+                    return res.status(400).send({error: 'Incorrect Password'})
+                }
+            }
+        })
+    }
+})
+
+app.post('/signup', (req, res) => {
+    if(!req.body.username || !req.body.password){
+        return res.status(404).send({message: 'Invalid username or password'})
+    }else{
+        username = req.body.username
+        Users.findOne({username: username}, (err, user) => {
+            if(err){
+                return res.status(404).send({message: 'User name already exists'})
+            }
+            else{
+                const user = new Users(req.body)
+                user.save().then(()=>{
+                    return res.status(200).send({ message: "User Created" })
+                }).catch(err => {
+                    return res.status(400).send({message: err.message})
+                })
+            }
+        })
+    }
+})
 
 
 app.post('/onboarding', (req, res) => {
