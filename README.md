@@ -46,25 +46,23 @@ app.post('/onboarding', (req, res) => {
 ```
 body = {
    content: "That's a great goal. How long have you been struggling with your sleep?",
+   ques_id: 1
  }
  ```
  ```
 app.post('/setQuestion', (req, res) => {
     const content = req.body.content
-    let ques_id
-    Questions.count({},function (err, count) {
-        if(!err){
-            ques_id = count + 1
-            const newQues = new Questions({content: content, ques_id: parseInt(ques_id)})
-            newQues.save().then(() => {
-                res.status(200).send({ message: "Ques Saved Successfully"})
-            }).catch(err => {
-                return res.status(400).send({ message: err.message })
-            })
-        }else{
-            return res.status(400).send({ message: err.message})
-        }
-    })
+    const ques_id = req.body.ques_id
+    if(!err){
+        const newQues = new Questions({content: content, ques_id: parseInt(ques_id)})
+        newQues.save().then(() => {
+            res.status(200).send({ message: "Ques Saved Successfully"})
+        }).catch(err => {
+            return res.status(400).send({ message: err.message })
+        })
+    }else{
+        return res.status(400).send({ message: err.message})
+    }
 })
 ```
 ## Get Question with ID
@@ -91,7 +89,8 @@ app.get('/question', (req, res) => {
 ```
 body = {
  content: "Less than 2 weeks",
- ques_id: 1
+ ques_id: 1,
+ option_id: 1
 }
 ```
 
@@ -99,20 +98,17 @@ body = {
 app.post('/setOptions', (req, res)=>{
     const content = req.body.content
     const ques_id = req.body.ques_id
-    let option_id = 1
-    Options.count({},function (err, count) {
-        if(!err){
-            option_id = count + 1
-            const newOption = new Options({content: content, ques_id: parseInt(ques_id), option_id: parseInt(option_id)})
-            newOption.save().then(() => {
-                res.status(200).send({ message: "Saved Successfully"})
-            }).catch(err => {
-                return res.status(400).send({ message: err.message })
-            })
-        }else{
-            return res.status(400).send({ message: err.message})
-        }
-    })
+    const option_id = req.body.option_id
+    if(!err){
+        const newOption = new Options({content: content, ques_id: parseInt(ques_id), option_id: parseInt(option_id)})
+        newOption.save().then(() => {
+            res.status(200).send({ message: "Saved Successfully"})
+        }).catch(err => {
+            return res.status(400).send({ message: err.message })
+        })
+    }else{
+        return res.status(400).send({ message: err.message})
+    }
 })
 ```
 ## Get Options
