@@ -33,7 +33,7 @@ app.post('/onboarding', (req, res) => {
 
 app.post('/setQuestion', (req, res) => {
     const content = req.body.content
-    let ques_id = 1
+    let ques_id
     Questions.count({},function (err, count) {
         if(!err){
             ques_id = count + 1
