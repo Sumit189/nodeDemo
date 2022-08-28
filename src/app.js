@@ -12,12 +12,13 @@ const Users = require('./models/users')
 
 app.use(
     cors({
+        // origin: 'http://localhost:3001'
         origin: 'https://react-demo-wysa.herokuapp.com'
     }),
     bodyParser.json()
 );
 
-app.get('/signin', (req, res) => {
+app.post('/signin', (req, res) => {
     if(!req.body.username || !req.body.password){
         return res.status(404).send({message: 'Invalid username or password'})
     }else{
@@ -28,9 +29,9 @@ app.get('/signin', (req, res) => {
             }
             else{
                 if(user.password === req.body.password){
-                    return res.status(200).send({user: user})
+                    return res.status(200).send({message: 'User found', user: user})
                 }else{
-                    return res.status(400).send({error: 'Incorrect Password'})
+                    return res.status(400).send({message: 'Incorrect Password'})
                 }
             }
         })
@@ -42,18 +43,12 @@ app.post('/signup', (req, res) => {
         return res.status(404).send({message: 'Invalid username or password'})
     }else{
         username = req.body.username
-        Users.findOne({username: username}, (err, user) => {
-            if(err){
-                return res.status(404).send({message: 'User name already exists'})
-            }
-            else{
-                const user = new Users(req.body)
-                user.save().then(()=>{
-                    return res.status(200).send({ message: "User Created" })
-                }).catch(err => {
-                    return res.status(400).send({message: err.message})
-                })
-            }
+        const user = new Users(req.body)
+        user.save().then(()=>{
+            return res.status(200).send({message: "User Created", user: user })
+        }).catch(err => {
+            console.log(err)
+            return res.status(400).send({message: err.message})
         })
     }
 })
@@ -65,7 +60,7 @@ app.post('/onboarding', (req, res) => {
     }else{
         const question = parseInt(req.body.question)
         const answer = req.body.answer
-        const evaluationRec = new UserEvaluations({question: question, answer: answer})
+        const evaluationRec = new UserEvaluations({question: question, answer: answer, user_id: req.user_id})
         evaluationRec.save().then(() =>{
             return res.status(200).send({ message: "Saved Successfully" })
         }).catch(err => {
