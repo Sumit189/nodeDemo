@@ -46,7 +46,6 @@ app.post('/onboarding', (req, res) => {
 ```
 body = {
    content: "That's a great goal. How long have you been struggling with your sleep?",
-   ques_id: 1
  }
  ```
  ```
