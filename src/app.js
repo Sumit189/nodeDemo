@@ -11,6 +11,9 @@ const Options = require('./models/options')
 const Users = require('./models/users')
 
 app.use(
+    cors({
+        origin: 'https://react-demo-wysa.herokuapp.com'
+    }),
     bodyParser.json()
 );
 
